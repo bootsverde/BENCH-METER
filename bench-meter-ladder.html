@@ -90,7 +90,7 @@ ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">CLICK Programming Software · C0-00DR-D + C0-4AD2DA-2 · Rev A</div>
+  <div class="eyebrow">CLICK Programming Software · C0-02DD2-D + C0-4AD2DA-2 · Rev A</div>
   <h1>Bench Meter Ladder</h1>
   <p class="lede">The complete ladder program for the bench meter: scaling, overload and fault flags, 100 ms averaging, mode select, HOLD, REL (zero), MIN/MAX and the continuity beeper, plus the analog module setup and the C-more tags that go with it. Enter it rung by rung in the CLICK software.</p>
 </header>
@@ -103,6 +103,8 @@ ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <li><b>Inputs CH1–CH4:</b> enabled, 0–10 V, scaled to engineering units <b>0.000 → 10.000</b>, stored in <code>DF1</code>–<code>DF4</code>. Every value in the ladder is then in volts at the terminal.</li>
       <li><b>Output CH1:</b> from <code>DF5</code>, scaled <b>0.000 → 10.000</b> = 0–10 V. <b>Output CH2:</b> disabled.</li>
       <li>If the software assigns different DF addresses, keep its choice and swap those addresses into the ladder.</li>
+      <li><b>The C0-02DD2-D's own analog (AD1/AD2, DA1/DA2) is not used.</b> It's only 0–5 V or 4–20 mA at 12-bit, so all measuring stays on the C0-4AD2DA-2. Check <i>Setup → CPU Built-in I/O Setup</i> to see which registers the built-in channels took, so you don't mix them up with the module's DF1–DF5.</li>
+      <li><b>Setup → Com Port Setup:</b> Port 2 = Modbus RTU, node 1, 38400, 8-O-1 for the panel. Leave Port 1 at its defaults for programming.</li>
       <li><b>Setup → Memory Setup:</b> make sure <code>DF20</code> (the DC calibration factor) is in the retentive range, so it survives a power cycle.</li>
     </ul>
   </div>
@@ -118,7 +120,7 @@ ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <tr class="grp"><td colspan="3">Physical I/O</td></tr>
       <tr><td>X001</td><td>HOLD_PB</td><td>Panel pushbutton HOLD</td></tr>
       <tr><td>X002</td><td>REL_PB</td><td>Panel pushbutton REL</td></tr>
-      <tr><td>Y001</td><td>BEEPER</td><td>Continuity buzzer ECX2070-24</td></tr>
+      <tr><td>Y001</td><td>BEEPER</td><td>Continuity buzzer ECX2070-24 · sourcing output, 0.1 A max</td></tr>
       <tr class="grp"><td colspan="3">Analog (float, volts)</td></tr>
       <tr><td>DF1</td><td>AI_ACV</td><td>CH1: VACT loop across R1, 1–5 V</td></tr>
       <tr><td>DF2</td><td>AI_DCV</td><td>CH2: DC divider, 0–10 V</td></tr>
@@ -172,7 +174,7 @@ ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     <div class="card">
       <h3>Panel setup</h3>
       <ul>
-        <li><b>PLC protocol:</b> AutomationDirect CLICK, serial, 38400 baud, odd parity, 8 data bits, 1 stop bit, node 1. These match Port 1's defaults.</li>
+        <li><b>PLC protocol:</b> AutomationDirect CLICK, serial, 38400 baud, odd parity, 8 data bits, 1 stop bit, node 1. Set CLICK Port 2 (Setup → Com Port Setup) to Modbus RTU with the same settings.</li>
         <li><b>Tags:</b> create them with the CLICK addresses exactly as shown. Use data type <i>Floating PT 32</i> for DF, <i>Signed Int 16</i> for DS, and <i>Discrete</i> for C.</li>
         <li><b>Reading display:</b> make three numeric displays tied to <code>DF30</code>, stacked in the same spot. Give AC V 1 decimal, DC V 3 decimals, and Ω 1 decimal, and set each one's visibility from <code>C51</code>, <code>C52</code> or <code>C53</code>.</li>
         <li><b>OL overlay:</b> put a red "OL" text object on top, visible when <code>C44</code> is on.</li>
@@ -201,7 +203,7 @@ ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
   <h2>5 · First run</h2>
   <div class="card">
     <ol>
-      <li>Download with the EA-2CBL unplugged, since Port 1 is shared with the panel. Put the CPU in RUN, then reconnect the panel.</li>
+      <li>Program through Port 1. The panel stays connected on Port 2 the whole time. Put the CPU in RUN.</li>
       <li>Open a Data View on <code>DF1</code>–<code>DF5</code>. You should see DF4 ≈ 10.0 and DF1 ≈ 1.00 (4 mA, 0 VAC), and C14 off.</li>
       <li>DC mode: put a known 24 V on the DC jacks. If DF30 is off from your reference meter, set <code>DF20 = 24.00 ÷ DF2</code>.</li>
       <li>Ω mode, leads shorted: press REL. It should read 0.0 and the beeper sounds. Put a 1 kΩ resistor on the leads and check it reads about 1000.</li>
@@ -271,7 +273,7 @@ const R=[
  {c:[[NO('T1','SAMPLE_100MS'),NC('C20','HOLD_ON'),NC('C44','SHOW_OL'),CMP('DF30 > DF33')]], o:[OUT('Copy','DF30 → DF33','MAX_VAL')], w:'Track every 100 ms, but not while held or over-range, so an OL spike doesn\'t get recorded as a MAX.'},
  {s:'Continuity beeper'},
  {c:[[NO('C53','MODE_OHM'),NO('C5','BEEP_EN'),NC('C12','OHM_OPEN'),CMP('DF12 < 30.0')]], o:[OUT('Set','Y001','BEEPER')], w:'Uses the unfiltered reading so the beep is instant.'},
- {c:[[NC('C53','MODE_OHM')],[NC('C5','BEEP_EN')],[NO('C12','OHM_OPEN')],[CMP('DF12 > 35.0')]], o:[OUT('Reset','Y001','BEEPER')], w:'Turns off above 35 Ω. The 5 Ω gap between on and off keeps the relay output from chattering on a borderline connection.'}
+ {c:[[NC('C53','MODE_OHM')],[NC('C5','BEEP_EN')],[NO('C12','OHM_OPEN')],[CMP('DF12 > 35.0')]], o:[OUT('Reset','Y001','BEEPER')], w:'Turns off above 35 Ω. The 5 Ω gap between on and off keeps the buzzer from chattering on a borderline connection.'}
 ];
 
 const glyph={no:'┤ ├',nc:'┤/├',up:'┤↑├'};

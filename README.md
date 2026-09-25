@@ -10,7 +10,7 @@ A three-function bench meter built from AutomationDirect CLICK PLC parts and a C
 
 | Part | Model |
 |---|---|
-| PLC | CLICK C0-00DR-D |
+| PLC | CLICK C0-02DD2-D (4 DC in, 4 sourcing out, 3 serial ports) |
 | Analog I/O | C0-4AD2DA-2 (4 in / 2 out, 0–10 V) |
 | Touch panel | C-more EA7-T8C (800 × 600) |
 | AC transducer | AcuAMP VACT500-42L |

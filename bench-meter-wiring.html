@@ -92,9 +92,9 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 <header>
   <div class="eyebrow">Wiring package · Rev A · 2026-09-23</div>
   <h1>CLICK Bench Meter Wiring</h1>
-  <p class="lede">A three-function bench meter (AC volts to 480 V, DC volts to 30 V, ohms and continuity) built from a CLICK Basic PLC, one analog combo module and a C-more EA7-T8C touch panel.</p>
+  <p class="lede">A three-function bench meter (AC volts to 480 V, DC volts to 30 V, ohms and continuity) built from a CLICK C0-02DD2-D PLC, one analog combo module and a C-more EA7-T8C touch panel.</p>
   <div class="meta">
-    <span>CPU <b>C0-00DR-D</b></span><span>Analog <b>C0-4AD2DA-2</b></span><span>HMI <b>EA7-T8C</b></span><span>AC transducer <b>VACT500-42L</b></span><span>Supply <b>PSB24-060S-P</b></span>
+    <span>CPU <b>C0-02DD2-D</b></span><span>Analog <b>C0-4AD2DA-2</b></span><span>HMI <b>EA7-T8C</b></span><span>AC transducer <b>VACT500-42L</b></span><span>Supply <b>PSB24-060S-P</b></span>
   </div>
   <div class="legend">
     <span><i style="border-color:var(--hv)"></i>line voltage (up to 480 VAC)</span>
@@ -166,8 +166,8 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 
       <!-- CPU -->
       <rect class="box" x="690" y="140" width="130" height="100" rx="3"/>
-      <text x="755" y="176" text-anchor="middle" class="lbl">C0-00DR-D</text>
-      <text x="755" y="196" text-anchor="middle" class="sm">CLICK Basic CPU</text>
+      <text x="755" y="176" text-anchor="middle" class="lbl">C0-02DD2-D</text>
+      <text x="755" y="196" text-anchor="middle" class="sm">CLICK analog CPU</text>
       <text x="755" y="214" text-anchor="middle" class="sm">scaling · hold · min/max</text>
       <line x1="630" y1="190" x2="688" y2="190" class="w" marker-start="url(#ar)" marker-end="url(#ar)"/>
       <text x="659" y="182" text-anchor="middle" class="sm">bus</text>
@@ -376,7 +376,7 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
   <div class="sechead"><h2>Power, buttons, buzzer, panel link</h2><span class="tag pwr">24 VDC</span></div>
   <figure>
     <div class="draw">
-    <svg viewBox="0 0 900 330" role="img" aria-label="The PSB24 supply feeds a +24 V rail and 0 V rail. The CPU, analog module, T8C panel and VACT loop hang between them. HOLD and REL pushbuttons switch +24 V into X1 and X2 with C1 at 0 V. Output common C3 is fed +24 V and Y1 switches the buzzer to 0 V. The T8C connects to CPU port 1 with an EA-2CBL.">
+    <svg viewBox="0 0 900 330" role="img" aria-label="The PSB24 supply feeds a +24 V rail and 0 V rail. The CPU, analog module, T8C panel and VACT loop hang between them. HOLD and REL pushbuttons switch +24 V into X1 and X2 with C1 at 0 V. Output supply V1 is fed +24 V, C0 goes to 0 V, and sourcing output Y1 drives the buzzer. The T8C connects to CPU port 2 with an EA-2CBL.">
       <!-- supply -->
       <text x="20" y="152" class="sm">120 VAC cord</text>
       <text x="20" y="168" class="sm">+ 2 A fuse</text>
@@ -393,9 +393,9 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <g>
         <line x1="290" y1="40" x2="290" y2="120" class="w pwrs"/><circle cx="290" cy="40" r="3.5" class="dot"/>
         <rect x="240" y="120" width="100" height="110" rx="3" class="box"/>
-        <text x="290" y="150" text-anchor="middle" class="lbl">C0-00DR-D</text>
+        <text x="290" y="150" text-anchor="middle" class="lbl">C0-02DD2-D</text>
         <text x="290" y="168" text-anchor="middle" class="sm">24V / 0V conn.</text>
-        <text x="290" y="200" text-anchor="middle" class="sm">120 mA</text>
+        <text x="290" y="200" text-anchor="middle" class="sm">140 mA</text>
         <line x1="290" y1="230" x2="290" y2="300" class="w"/><circle cx="290" cy="300" r="3.5" class="dot"/>
       </g>
       <g>
@@ -425,7 +425,7 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
         <line x1="810" y1="40" x2="810" y2="120" class="w pwrs"/><circle cx="810" cy="40" r="3.5" class="dot"/>
         <rect x="760" y="120" width="100" height="110" rx="3" class="box"/>
         <text x="810" y="150" text-anchor="middle" class="lbl">I/O commons</text>
-        <text x="810" y="168" text-anchor="middle" class="sm">C3, buttons</text>
+        <text x="810" y="168" text-anchor="middle" class="sm">V1, C0, buttons</text>
         <text x="810" y="200" text-anchor="middle" class="sm">see below</text>
         <line x1="810" y1="230" x2="810" y2="300" class="w"/><circle cx="810" cy="300" r="3.5" class="dot"/>
       </g>
@@ -436,12 +436,14 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 
   <figure>
     <div class="draw">
-    <svg viewBox="0 0 900 270" role="img" aria-label="CPU input wiring: +24 V through HOLD pushbutton to X1 and through REL pushbutton to X2, common C1 to 0 V. Output wiring: +24 V into relay common C3, Y1 out to buzzer plus, buzzer minus to 0 V. Port 1 RJ12 to T8C serial port via EA-2CBL.">
+    <svg viewBox="0 0 900 270" role="img" aria-label="CPU input wiring: +24 V through HOLD pushbutton to X1 and through REL pushbutton to X2, common C1 to 0 V. Output wiring: +24 V into output supply V1, output common C0 to 0 V, sourcing output Y1 to buzzer plus, buzzer minus to 0 V. Port 2 RJ12 to T8C serial port via EA-2CBL.">
       <rect x="360" y="30" width="200" height="190" rx="3" class="box"/>
-      <text x="460" y="54" text-anchor="middle" class="lbl">C0-00DR-D</text>
+      <text x="460" y="54" text-anchor="middle" class="lbl">C0-02DD2-D</text>
       <text x="370" y="84">C1</text><text x="370" y="124">X1</text><text x="370" y="164">X2</text>
-      <text x="550" y="84" text-anchor="end">C3</text><text x="550" y="124" text-anchor="end">Y1</text>
-      <text x="460" y="212" text-anchor="middle" class="sm">Port 1 (RJ12)</text>
+      <text x="550" y="84" text-anchor="end">V1</text><text x="550" y="124" text-anchor="end">Y1</text><text x="550" y="164" text-anchor="end">C0</text>
+      <text x="460" y="212" text-anchor="middle" class="sm">Port 2 (RJ12)</text>
+      <!-- C0 -->
+      <line x1="560" y1="160" x2="820" y2="160" class="w"/><text x="880" y="164" text-anchor="end">0 V</text>
       <!-- C1 -->
       <line x1="360" y1="80" x2="80" y2="80" class="w"/><text x="30" y="84">0 V</text>
       <!-- X1 -->
@@ -456,7 +458,7 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <line x1="180" y1="146" x2="240" y2="146" class="w"/><line x1="210" y1="146" x2="210" y2="138" class="w"/>
       <text x="210" y="184" text-anchor="middle" class="sm">PB2 REL (N.O.)</text>
       <line x1="240" y1="160" x2="360" y2="160" class="w"/>
-      <!-- C3 -->
+      <!-- V1 -->
       <line x1="560" y1="80" x2="820" y2="80" class="w pwrs"/><text x="880" y="84" text-anchor="end" class="pwrt">+24 V</text>
       <!-- Y1 buzzer -->
       <line x1="560" y1="120" x2="660" y2="120" class="w"/>
@@ -469,7 +471,7 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <text x="710" y="254">EA-2CBL → EA7-T8C serial (15-pin)</text>
     </svg>
     </div>
-    <figcaption><b>Inputs X1–X4 share C1.</b> Tie C1 to 0 V and the buttons switch +24 V in. <b>Relay outputs Y1–Y4 share C3.</b> Feed C3 +24 V and Y1 switches the buzzer. Port 1 is also the programming port: unplug the EA-2CBL when you download ladder changes. Port 1 defaults are 38400 baud, 8-O-1, node 1, Modbus RTU.</figcaption>
+    <figcaption><b>Inputs X1–X4 share C1.</b> Tie C1 to 0 V and the buttons switch +24 V in. <b>Y1–Y4 are sourcing transistor outputs</b> (0.1 A per point). Feed V1 +24 V, tie C0 to 0 V, and Y1 switches +24 V to the buzzer. <b>The panel goes on Port 2</b>, so Port 1 stays free for programming and you never have to unplug the panel to download. In CLICK <i>Setup → Com Port Setup</i>, set Port 2 to Modbus RTU, node 1, 38400 baud, 8-O-1 to match the panel.</figcaption>
   </figure>
 </section>
 
@@ -481,8 +483,8 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     <thead><tr><th>From</th><th>To</th><th>Notes</th></tr></thead>
     <tbody>
       <tr class="grp pwr"><td colspan="3">Power</td></tr>
-      <tr><td><code>PSB24 +V</code></td><td>CPU 24V · module 24V · T8C 24V · VACT (+) · CPU C3 · PB1/PB2 one side</td><td>+24 V rail, 18 AWG</td></tr>
-      <tr><td><code>PSB24 −V</code></td><td>CPU 0V · module 0V (power) · T8C 0V · R1 low end · CPU C1 · buzzer (−)</td><td>0 V rail</td></tr>
+      <tr><td><code>PSB24 +V</code></td><td>CPU 24V · module 24V · T8C 24V · VACT (+) · CPU V1 · PB1/PB2 one side</td><td>+24 V rail, 18 AWG</td></tr>
+      <tr><td><code>PSB24 −V</code></td><td>CPU 0V · module 0V (power) · T8C 0V · R1 low end · CPU C1 · CPU C0 · buzzer (−)</td><td>0 V rail</td></tr>
       <tr><td>120 VAC cord</td><td>PSB24 L / N / ⏚</td><td>2 A fuse in line, ground the enclosure</td></tr>
       <tr class="grp hv"><td colspan="3">AC volts — 600 V rated wire &amp; parts</td></tr>
       <tr><td>AC jack L1 (red)</td><td>F1 → VACT <code>L1</code></td><td>F1 KLKD.500 (0.5 A 600 V) in EHM1DU</td></tr>
@@ -502,7 +504,7 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <tr><td>+24 V → PB1 HOLD</td><td>CPU <code>X1</code></td><td>N.O. pushbutton</td></tr>
       <tr><td>+24 V → PB2 REL</td><td>CPU <code>X2</code></td><td>N.O. pushbutton</td></tr>
       <tr><td>CPU <code>Y1</code></td><td>ECX2070-24 (+)</td><td>buzzer (−) to 0 V</td></tr>
-      <tr><td>CPU Port 1</td><td>T8C serial port</td><td>EA-2CBL</td></tr>
+      <tr><td>CPU Port 2</td><td>T8C serial port</td><td>EA-2CBL · Port 1 stays free for programming</td></tr>
     </tbody>
   </table>
   </div>
