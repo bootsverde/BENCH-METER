@@ -1,0 +1,293 @@
+<title>Bench Meter Ladder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F2F4F3; --panel:#FFFFFF; --ink:#1B2226; --muted:#5B676D; --rule:#CBD3D6;
+  --rail:#1E5CA6; --coil:#A5650A; --cmp:#2E7D4F; --hv:#C4321C; --hv-wash:rgba(196,50,28,.08);
+  --chip:#F4F6F7;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#111619; --panel:#181F23; --ink:#E2E8EA; --muted:#94A2A8; --rule:#2E393E;
+    --rail:#72AAF2; --coil:#E3A444; --cmp:#62C08A; --hv:#FF6A52; --hv-wash:rgba(255,106,82,.10);
+    --chip:#1F282D;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#111619; --panel:#181F23; --ink:#E2E8EA; --muted:#94A2A8; --rule:#2E393E;
+  --rail:#72AAF2; --coil:#E3A444; --cmp:#62C08A; --hv:#FF6A52; --hv-wash:rgba(255,106,82,.10);
+  --chip:#1F282D;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:15px/1.6 var(--body);padding-inline:16px;padding-block:32px 64px}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:18px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 clamp(34px,6vw,52px)/1 var(--display);margin:0;text-wrap:balance}
+h2{font:600 26px/1.1 var(--display);margin:0;letter-spacing:.02em}
+h3{font:600 15px/1.3 var(--body);margin:0}
+p{margin:0;max-width:74ch}
+.lede{color:var(--muted);max-width:78ch}
+section{display:flex;flex-direction:column;gap:14px}
+code,.mono{font-family:var(--mono);font-size:.9em}
+.tbl{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:4px}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:13.5px}
+th,td{text-align:left;padding:7px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--ground)}
+td:first-child{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+tr.grp td{font:600 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-bottom:1px solid var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:10px}
+ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.note{border-left:4px solid var(--rail);background:var(--panel);padding:12px 16px;border-radius:0 4px 4px 0;color:var(--muted);font-size:14px}
+.note b{color:var(--ink)}
+
+/* ladder */
+.sect{font:600 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rail);padding:18px 0 6px;border-bottom:1px solid var(--rule)}
+.prog{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:4px 16px 16px;display:flex;flex-direction:column}
+.rung{display:grid;grid-template-columns:34px minmax(0,1fr);gap:4px 10px;padding:12px 0;border-bottom:1px dashed var(--rule)}
+.rung:last-child{border-bottom:none}
+.num{font:600 13px/1 var(--mono);color:var(--muted);padding-top:14px;text-align:right}
+.scroll{overflow-x:auto}
+.lad{display:flex;align-items:center;min-width:max-content;border-left:3px solid var(--rail);padding:4px 0;position:relative}
+.lad::after{content:"";position:absolute;right:-3px;top:0;bottom:0;border-right:3px solid var(--rail)}
+.conds{display:flex;flex-direction:column;gap:6px;padding:0 0 0 0}
+.conds.or{border-left:2px solid var(--ink);border-right:2px solid var(--ink);padding:0}
+.br{display:flex;align-items:center;position:relative}
+.br::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid var(--ink);z-index:0}
+.wire{flex:1 1 24px;min-width:24px;border-top:2px solid var(--ink)}
+.lead{width:14px;border-top:2px solid var(--ink)}
+.ct{position:relative;z-index:1;display:inline-flex;flex-direction:column;align-items:center;margin:0 10px;background:var(--panel);padding:0 4px;min-width:64px}
+.ct .g{font:600 13px/1 var(--mono);letter-spacing:.02em}
+.ct .a{font:600 12px/1.2 var(--mono)}
+.ct .n{font:400 10.5px/1.2 var(--mono);color:var(--muted)}
+.cmpbox{position:relative;z-index:1;margin:0 10px;border:1.5px solid var(--cmp);border-radius:3px;background:var(--panel);padding:3px 8px;font:500 12px/1.3 var(--mono);color:var(--cmp);white-space:nowrap}
+.outs{display:flex;flex-direction:column;gap:6px;margin-right:10px}
+.op{display:flex;align-items:center;gap:8px;border:1.5px solid var(--coil);border-radius:3px;background:var(--chip);padding:4px 10px;font:500 12.5px/1.35 var(--mono);white-space:nowrap}
+.op b{color:var(--coil);font-weight:600}
+.op i{font-style:normal;color:var(--muted);font-size:11px}
+.why{grid-column:2;color:var(--muted);font-size:13.5px;max-width:90ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;font:12px/1.3 var(--mono);color:var(--muted)}
+.legend b{color:var(--ink);font-weight:600}
+@media print{
+  body{padding:0}
+  .scroll,.tbl{overflow:visible}
+  table{min-width:0!important}
+  .prog{zoom:.78}
+  .rung,.card,tr{break-inside:avoid}
+  h2,.sect{break-after:avoid}
+}
+@page{size:letter;margin:12mm}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">CLICK Programming Software · C0-00DR-D + C0-4AD2DA-2 · Rev A</div>
+  <h1>Bench Meter Ladder</h1>
+  <p class="lede">The complete ladder program for the bench meter: scaling, overload and fault flags, 100 ms averaging, mode select, HOLD, REL (zero), MIN/MAX and the continuity beeper, plus the analog module setup and the C-more tags that go with it. Enter it rung by rung in the CLICK software.</p>
+</header>
+
+<section>
+  <h2>1 · Analog module setup</h2>
+  <div class="card">
+    <p>In CLICK software, open <b>Setup → System Configuration</b>, select the C0-4AD2DA-2 (slot 1), and open its setup:</p>
+    <ul>
+      <li><b>Inputs CH1–CH4:</b> enabled, 0–10 V, scaled to engineering units <b>0.000 → 10.000</b>, stored in <code>DF1</code>–<code>DF4</code>. Every value in the ladder is then in volts at the terminal.</li>
+      <li><b>Output CH1:</b> from <code>DF5</code>, scaled <b>0.000 → 10.000</b> = 0–10 V. <b>Output CH2:</b> disabled.</li>
+      <li>If the software assigns different DF addresses, keep its choice and swap those addresses into the ladder.</li>
+      <li><b>Setup → Memory Setup:</b> make sure <code>DF20</code> (the DC calibration factor) is in the retentive range, so it survives a power cycle.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>2 · Address &amp; nickname map</h2>
+  <p class="lede">Type these nicknames into the Address Picker first. Then the rungs below read the same way on your screen.</p>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>Address</th><th>Nickname</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="3">Physical I/O</td></tr>
+      <tr><td>X001</td><td>HOLD_PB</td><td>Panel pushbutton HOLD</td></tr>
+      <tr><td>X002</td><td>REL_PB</td><td>Panel pushbutton REL</td></tr>
+      <tr><td>Y001</td><td>BEEPER</td><td>Continuity buzzer ECX2070-24</td></tr>
+      <tr class="grp"><td colspan="3">Analog (float, volts)</td></tr>
+      <tr><td>DF1</td><td>AI_ACV</td><td>CH1: VACT loop across R1, 1–5 V</td></tr>
+      <tr><td>DF2</td><td>AI_DCV</td><td>CH2: DC divider, 0–10 V</td></tr>
+      <tr><td>DF3</td><td>AI_OHM</td><td>CH3: volts across Rx</td></tr>
+      <tr><td>DF4</td><td>AI_EXCITE</td><td>CH4: actual excitation, about 10 V</td></tr>
+      <tr><td>DF5</td><td>AO_EXCITE</td><td>OUT CH1 command, 10.0</td></tr>
+      <tr class="grp"><td colspan="3">Calculated (float)</td></tr>
+      <tr><td>DF10 / 11 / 12</td><td>ACV_RAW · DCV_RAW · OHM_RAW</td><td>Scaled readings every scan</td></tr>
+      <tr><td>DF13 / 14 / 15</td><td>ACV_AVG · DCV_AVG · OHM_AVG</td><td>Filtered readings, updated every 100 ms</td></tr>
+      <tr><td>DF16</td><td>OHM_OPEN_THR</td><td>99% of excitation (the open-leads threshold)</td></tr>
+      <tr><td>DF20</td><td>DCV_CAL</td><td>DC divider factor, 3.000 nominal · <b>retentive</b></td></tr>
+      <tr><td>DF30</td><td>DISPLAY</td><td>What the T8C shows</td></tr>
+      <tr><td>DF31</td><td>REL_OFFSET</td><td>Captured zero</td></tr>
+      <tr><td>DF32 / 33</td><td>MIN_VAL · MAX_VAL</td><td>Minimum and maximum since reset</td></tr>
+      <tr><td>DF40 / 41</td><td>LIVE · LIVE_REL</td><td>Selected reading, then with REL applied</td></tr>
+      <tr class="grp"><td colspan="3">Mode (integer)</td></tr>
+      <tr><td>DS1</td><td>MODE</td><td>1 = AC V · 2 = DC V · 3 = Ω</td></tr>
+      <tr><td>DS2</td><td>MODE_LAST</td><td>Detects mode changes</td></tr>
+      <tr class="grp"><td colspan="3">Bits from the T8C (written by the panel)</td></tr>
+      <tr><td>C1 / C2 / C3</td><td>HMI_HOLD · HMI_REL · HMI_MMRESET</td><td>Momentary buttons</td></tr>
+      <tr><td>C5</td><td>BEEP_EN</td><td>Toggle button, on at power-up</td></tr>
+      <tr><td>C6 / C7 / C8</td><td>HMI_ACV · HMI_DCV · HMI_OHM</td><td>Momentary mode buttons</td></tr>
+      <tr class="grp"><td colspan="3">Status bits (read by the panel)</td></tr>
+      <tr><td>C10 / C11 / C12</td><td>ACV_OL · DCV_OL · OHM_OPEN</td><td>Over-range / open leads</td></tr>
+      <tr><td>C13 / C14</td><td>EXCITE_FLT · LOOP_FLT</td><td>Excitation under 5 V / VACT loop under 3.6 mA</td></tr>
+      <tr><td>C20 / C21</td><td>HOLD_ON · REL_ON</td><td>State latches</td></tr>
+      <tr><td>C30 – C36</td><td>HOLD_PULSE … REL_RSTCMD</td><td>Toggle helper bits</td></tr>
+      <tr><td>C41</td><td>MODE_CHG</td><td>One-scan pulse on a mode change</td></tr>
+      <tr><td>C44</td><td>SHOW_OL</td><td>The current mode is over-range or faulted</td></tr>
+      <tr><td>C51 / 52 / 53</td><td>MODE_ACV · MODE_DCV · MODE_OHM</td><td>Mode bits for rungs and screen visibility</td></tr>
+      <tr><td>T1</td><td>SAMPLE_100MS</td><td>Self-resetting 100 ms sample clock</td></tr>
+      <tr><td>SC1 / SC2</td><td>_Always_ON · _1st_SCAN</td><td>CLICK system bits</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>3 · Program</h2>
+  <div class="legend">
+    <span><b>┤ ├</b> normally open</span><span><b>┤/├</b> normally closed</span><span><b>┤↑├</b> rising edge</span>
+    <span style="color:var(--cmp)"><b style="color:var(--cmp)">[ ]</b> compare contact</span><span style="color:var(--coil)"><b style="color:var(--coil)">▭</b> output instruction</span>
+  </div>
+  <div class="prog" id="prog"></div>
+  <div class="note"><b>Order matters.</b> Enter the rungs in this order. The toggles, mode-change pulse and REL capture depend on the earlier rungs running first in the same scan. CLICK adds its own <code>END</code> rung after the last one.</div>
+</section>
+
+<section>
+  <h2>4 · C-more EA7-T8C tags</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Panel setup</h3>
+      <ul>
+        <li><b>PLC protocol:</b> AutomationDirect CLICK, serial, 38400 baud, odd parity, 8 data bits, 1 stop bit, node 1. These match Port 1's defaults.</li>
+        <li><b>Tags:</b> create them with the CLICK addresses exactly as shown. Use data type <i>Floating PT 32</i> for DF, <i>Signed Int 16</i> for DS, and <i>Discrete</i> for C.</li>
+        <li><b>Reading display:</b> make three numeric displays tied to <code>DF30</code>, stacked in the same spot. Give AC V 1 decimal, DC V 3 decimals, and Ω 1 decimal, and set each one's visibility from <code>C51</code>, <code>C52</code> or <code>C53</code>.</li>
+        <li><b>OL overlay:</b> put a red "OL" text object on top, visible when <code>C44</code> is on.</li>
+        <li><b>Trend graph:</b> plot <code>DF30</code>, sampling every 0.5 s over 60 s.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Objects → addresses</h3>
+      <div class="tbl" style="border:none"><table style="min-width:0"><tbody>
+        <tr><td>DF30</td><td>Main reading</td></tr>
+        <tr><td>DF32 / DF33</td><td>MIN / MAX displays</td></tr>
+        <tr><td>C6 · C7 · C8</td><td>Mode buttons (momentary)</td></tr>
+        <tr><td>C51 · C52 · C53</td><td>Mode button lamps and units text</td></tr>
+        <tr><td>C1 → C20</td><td>HOLD button · lamp</td></tr>
+        <tr><td>C2 → C21</td><td>REL button · lamp</td></tr>
+        <tr><td>C3</td><td>MIN/MAX reset (momentary)</td></tr>
+        <tr><td>C5</td><td>Beep on/off (toggle)</td></tr>
+        <tr><td>C13 · C14</td><td>"Excitation fault" · "Check VACT loop" alarms</td></tr>
+        <tr><td>DF20</td><td>DC calibration entry on a hidden setup screen</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>5 · First run</h2>
+  <div class="card">
+    <ol>
+      <li>Download with the EA-2CBL unplugged, since Port 1 is shared with the panel. Put the CPU in RUN, then reconnect the panel.</li>
+      <li>Open a Data View on <code>DF1</code>–<code>DF5</code>. You should see DF4 ≈ 10.0 and DF1 ≈ 1.00 (4 mA, 0 VAC), and C14 off.</li>
+      <li>DC mode: put a known 24 V on the DC jacks. If DF30 is off from your reference meter, set <code>DF20 = 24.00 ÷ DF2</code>.</li>
+      <li>Ω mode, leads shorted: press REL. It should read 0.0 and the beeper sounds. Put a 1 kΩ resistor on the leads and check it reads about 1000.</li>
+      <li>AC mode: check against your handheld on 120 V first, then 480 V.</li>
+    </ol>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Rung data: c = OR-branches, each a series of contacts; o = output instructions
+const NO=(a,n)=>({t:'no',a,n}), NC=(a,n)=>({t:'nc',a,n}), UP=(a,n)=>({t:'up',a,n}), CMP=(x)=>({t:'cmp',x});
+const OUT=(k,x,n)=>({k,x,n});
+const R=[
+ {s:'Initialize'},
+ {c:[[NO('SC2','_1st_SCAN'),CMP('DF20 == 0.0')]], o:[OUT('Copy','3.0 → DF20','DCV_CAL')], w:'On the very first power-up, load the nominal 3:1 divider factor. After that DF20 keeps whatever you calibrate it to.'},
+ {c:[[NO('SC2','_1st_SCAN')]], o:[OUT('Set','C5','BEEP_EN'),OUT('Copy','2 → DS1','MODE')], w:'Start with the beeper enabled and in DC V mode, the safest mode to power up in.'},
+ {c:[[NO('SC1','_Always_ON')]], o:[OUT('Copy','10.0 → DF5','AO_EXCITE')], w:'Hold the ohms excitation output at 10 V.'},
+ {s:'Sample clock'},
+ {c:[[NC('T1','SAMPLE_100MS')]], o:[OUT('TMR','T1 · preset 100 ms','SAMPLE_100MS')], w:'Self-resetting timer: T1 is on for exactly one scan every 100 ms, and that pulse paces the averaging and MIN/MAX.'},
+ {s:'Scale to engineering units'},
+ {c:[[NO('SC1','_Always_ON')]], o:[OUT('Math','DF10 = (DF1 − 1.0) × 125.0','ACV_RAW')], w:'VACT: 1 V (4 mA) = 0 VAC and 5 V (20 mA) = 500 VAC.'},
+ {c:[[NO('SC1','_Always_ON')]], o:[OUT('Math','DF11 = DF2 × DF20','DCV_RAW')], w:'DC volts = terminal volts × divider ratio (3.000 nominal).'},
+ {c:[[NO('SC1','_Always_ON')]], o:[OUT('Math','DF16 = DF4 × 0.99','OHM_OPEN_THR')], w:'Anything above 99% of the actual excitation counts as open leads (about 200 kΩ).'},
+ {c:[[CMP('DF3 < DF16'),CMP('DF4 > 5.0')]], o:[OUT('Math','DF12 = 2000.0 × DF3 ÷ (DF4 − DF3)','OHM_RAW')], w:'Ratio ohmmeter with the 2 kΩ reference. Only calculated when the leads aren\'t open and the excitation is healthy, so it never divides by zero.'},
+ {s:'Over-range & fault flags'},
+ {c:[[CMP('DF3 >= DF16')]], o:[OUT('Out','C12','OHM_OPEN')], w:'Ω: leads open or resistance above range.'},
+ {c:[[CMP('DF4 <= 5.0')]], o:[OUT('Out','C13','EXCITE_FLT')], w:'Excitation collapsed. Look for a shorted probe on a live circuit, a tripped PTC2 or a blown F4.'},
+ {c:[[CMP('DF10 > 520.0')]], o:[OUT('Out','C10','ACV_OL')], w:'AC V above the VACT\'s range. It caps at 24 mA, about 625 V indicated.'},
+ {c:[[CMP('DF1 < 0.9')]], o:[OUT('Out','C14','LOOP_FLT')], w:'Loop current under 3.6 mA means the VACT is unpowered or the loop is broken or reversed.'},
+ {c:[[CMP('DF2 > 9.98')]], o:[OUT('Out','C11','DCV_OL')], w:'DC input at the 30 V ceiling.'},
+ {s:'Averaging (every 100 ms)'},
+ {c:[[NO('T1','SAMPLE_100MS')]], o:[OUT('Math','DF13 = DF13 + (DF10 − DF13) × 0.3','ACV_AVG'),OUT('Math','DF14 = DF14 + (DF11 − DF14) × 0.3','DCV_AVG'),OUT('Math','DF15 = DF15 + (DF12 − DF15) × 0.3','OHM_AVG')], w:'First-order filter. It settles about 90% in 0.6 s. Raise 0.3 for faster response, lower it for a steadier display.'},
+ {s:'Mode select'},
+ {c:[[UP('C6','HMI_ACV')]], o:[OUT('Copy','1 → DS1','MODE')], w:''},
+ {c:[[UP('C7','HMI_DCV')]], o:[OUT('Copy','2 → DS1','MODE')], w:''},
+ {c:[[UP('C8','HMI_OHM')]], o:[OUT('Copy','3 → DS1','MODE')], w:'The three panel mode buttons.'},
+ {c:[[CMP('DS1 == 1')]], o:[OUT('Out','C51','MODE_ACV')], w:''},
+ {c:[[CMP('DS1 == 2')]], o:[OUT('Out','C52','MODE_DCV')], w:''},
+ {c:[[CMP('DS1 == 3')]], o:[OUT('Out','C53','MODE_OHM')], w:'One bit per mode, for the rungs below and for screen visibility and lamps on the T8C.'},
+ {c:[[CMP('DS1 != DS2')]], o:[OUT('Out','C41','MODE_CHG'),OUT('Copy','DS1 → DS2','MODE_LAST')], w:'One-scan pulse whenever the mode changes.'},
+ {c:[[NO('C41','MODE_CHG')]], o:[OUT('Reset','C20','HOLD_ON'),OUT('Reset','C21','REL_ON'),OUT('Copy','0.0 → DF31','REL_OFFSET')], w:'Changing modes cancels HOLD and REL, so a stale zero or held reading never carries into another function.'},
+ {s:'Select live reading'},
+ {c:[[NO('C51','MODE_ACV')]], o:[OUT('Copy','DF13 → DF40','LIVE')], w:''},
+ {c:[[NO('C52','MODE_DCV')]], o:[OUT('Copy','DF14 → DF40','LIVE')], w:''},
+ {c:[[NO('C53','MODE_OHM')]], o:[OUT('Copy','DF15 → DF40','LIVE')], w:'Route the active mode\'s filtered value to LIVE.'},
+ {c:[[NO('C51','MODE_ACV'),NO('C10','ACV_OL')],[NO('C51','MODE_ACV'),NO('C14','LOOP_FLT')],[NO('C52','MODE_DCV'),NO('C11','DCV_OL')],[NO('C53','MODE_OHM'),NO('C12','OHM_OPEN')],[NO('C53','MODE_OHM'),NO('C13','EXCITE_FLT')]], o:[OUT('Out','C44','SHOW_OL')], w:'Show "OL" on the panel when the active function is over-range or faulted.'},
+ {s:'HOLD toggle (X001 or panel)'},
+ {c:[[UP('X001','HOLD_PB')],[UP('C1','HMI_HOLD')]], o:[OUT('Out','C30','HOLD_PULSE')], w:'Either button gives a one-scan pulse.'},
+ {c:[[NO('C30','HOLD_PULSE'),NC('C20','HOLD_ON')]], o:[OUT('Out','C32','HOLD_SETCMD')], w:''},
+ {c:[[NO('C30','HOLD_PULSE'),NO('C20','HOLD_ON')]], o:[OUT('Out','C33','HOLD_RSTCMD')], w:'Decide the direction before changing the latch, so it flips exactly once per press.'},
+ {c:[[NO('C32','HOLD_SETCMD')]], o:[OUT('Set','C20','HOLD_ON')], w:''},
+ {c:[[NO('C33','HOLD_RSTCMD')]], o:[OUT('Reset','C20','HOLD_ON')], w:''},
+ {s:'REL (zero) toggle (X002 or panel)'},
+ {c:[[UP('X002','REL_PB')],[UP('C2','HMI_REL')]], o:[OUT('Out','C34','REL_PULSE')], w:''},
+ {c:[[NO('C34','REL_PULSE'),NC('C21','REL_ON')]], o:[OUT('Out','C35','REL_SETCMD')], w:''},
+ {c:[[NO('C34','REL_PULSE'),NO('C21','REL_ON')]], o:[OUT('Out','C36','REL_RSTCMD')], w:''},
+ {c:[[NO('C35','REL_SETCMD')]], o:[OUT('Set','C21','REL_ON'),OUT('Copy','DF40 → DF31','REL_OFFSET')], w:'Turning REL on captures the present reading as the zero. With the leads shorted in Ω, that nulls out the leads and PTC2.'},
+ {c:[[NO('C36','REL_RSTCMD')]], o:[OUT('Reset','C21','REL_ON'),OUT('Copy','0.0 → DF31','REL_OFFSET')], w:''},
+ {c:[[NO('SC1','_Always_ON')]], o:[OUT('Math','DF41 = DF40 − DF31','LIVE_REL')], w:''},
+ {s:'Display'},
+ {c:[[NC('C20','HOLD_ON')]], o:[OUT('Copy','DF41 → DF30','DISPLAY')], w:'While HOLD is on this rung stops copying, so DF30 freezes at the last value.'},
+ {s:'MIN / MAX'},
+ {c:[[UP('C3','HMI_MMRESET')],[NO('C41','MODE_CHG')],[NO('SC2','_1st_SCAN')]], o:[OUT('Copy','DF30 → DF32','MIN_VAL'),OUT('Copy','DF30 → DF33','MAX_VAL')], w:'Reset both to the present reading on the button, a mode change, or power-up.'},
+ {c:[[NO('T1','SAMPLE_100MS'),NC('C20','HOLD_ON'),NC('C44','SHOW_OL'),CMP('DF30 < DF32')]], o:[OUT('Copy','DF30 → DF32','MIN_VAL')], w:''},
+ {c:[[NO('T1','SAMPLE_100MS'),NC('C20','HOLD_ON'),NC('C44','SHOW_OL'),CMP('DF30 > DF33')]], o:[OUT('Copy','DF30 → DF33','MAX_VAL')], w:'Track every 100 ms, but not while held or over-range, so an OL spike doesn\'t get recorded as a MAX.'},
+ {s:'Continuity beeper'},
+ {c:[[NO('C53','MODE_OHM'),NO('C5','BEEP_EN'),NC('C12','OHM_OPEN'),CMP('DF12 < 30.0')]], o:[OUT('Set','Y001','BEEPER')], w:'Uses the unfiltered reading so the beep is instant.'},
+ {c:[[NC('C53','MODE_OHM')],[NC('C5','BEEP_EN')],[NO('C12','OHM_OPEN')],[CMP('DF12 > 35.0')]], o:[OUT('Reset','Y001','BEEPER')], w:'Turns off above 35 Ω. The 5 Ω gap between on and off keeps the relay output from chattering on a borderline connection.'}
+];
+
+const glyph={no:'┤ ├',nc:'┤/├',up:'┤↑├'};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function item(i){
+  if(i.t==='cmp') return `<span class="cmpbox">[ ${esc(i.x)} ]</span>`;
+  return `<span class="ct"><span class="g">${glyph[i.t]}</span><span class="a">${esc(i.a)}</span><span class="n">${esc(i.n)}</span></span>`;
+}
+let html='', n=0;
+for(const r of R){
+  if(r.s){ html+=`<div class="sect">${esc(r.s)}</div>`; continue; }
+  n++;
+  const br=r.c.map(b=>`<div class="br">${b.map(item).join('')}</div>`).join('');
+  const conds=`<div class="conds${r.c.length>1?' or':''}">${br}</div>`;
+  const outs=r.o.map(o=>`<span class="op"><b>${esc(o.k)}</b>${esc(o.x)}${o.n?` <i>${esc(o.n)}</i>`:''}</span>`).join('');
+  html+=`<div class="rung"><div class="num">${n}</div><div class="scroll"><div class="lad"><span class="lead"></span>${conds}<span class="wire"></span><div class="outs">${outs}</div></div></div>${r.w?`<div class="why">${esc(r.w)}</div>`:''}</div>`;
+}
+document.getElementById('prog').innerHTML=html;
+</script>

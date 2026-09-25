@@ -1,0 +1,382 @@
+<title>Bench Meter Stripboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F2F4F3; --panel:#FFFFFF; --ink:#1B2226; --muted:#5B676D; --rule:#CBD3D6;
+  --hv:#C4321C; --hv-wash:rgba(196,50,28,.08);
+  --fr4:#E6DEC4; --cu:#D69A5C; --solder:#8E989D; --link:#2C66B0; --bus:#2E7D4F;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#111619; --panel:#181F23; --ink:#E2E8EA; --muted:#94A2A8; --rule:#2E393E;
+    --hv:#FF6A52; --hv-wash:rgba(255,106,82,.10);
+    --fr4:#2B2A22; --cu:#9C6A3C; --solder:#B8C1C6; --link:#6FA3EE; --bus:#62C08A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#111619; --panel:#181F23; --ink:#E2E8EA; --muted:#94A2A8; --rule:#2E393E;
+  --hv:#FF6A52; --hv-wash:rgba(255,106,82,.10);
+  --fr4:#2B2A22; --cu:#9C6A3C; --solder:#B8C1C6; --link:#6FA3EE; --bus:#62C08A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:15px/1.6 var(--body);padding-inline:16px;padding-block:32px 64px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+header{display:flex;flex-direction:column;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:18px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 clamp(34px,6vw,52px)/1 var(--display);margin:0;text-wrap:balance}
+h2{font:600 26px/1.1 var(--display);margin:0;letter-spacing:.02em}
+h3{font:600 15px/1.3 var(--body);margin:0}
+p{margin:0;max-width:72ch}
+.lede{color:var(--muted);max-width:76ch}
+section{display:flex;flex-direction:column;gap:16px}
+figure{margin:0;background:var(--panel);border:1px solid var(--rule);border-radius:4px;display:flex;flex-direction:column}
+.draw{overflow-x:auto;padding:16px 12px 8px}
+.draw svg{display:block;width:100%;min-width:780px;height:auto;color:var(--ink)}
+figcaption{padding:12px 16px 14px;border-top:1px solid var(--rule);color:var(--muted);font-size:13.5px;display:flex;flex-direction:column;gap:10px}
+figcaption b{color:var(--ink);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font:12px/1 var(--mono);color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{display:inline-block;width:22px;height:10px;border-radius:2px}
+
+/* stripboard: 10 units = 0.1 in hole pitch; x = hole × 10, y = strip × 10 */
+svg.sb text{font-family:var(--mono);font-size:7px;fill:currentColor}
+svg.sb .lab{font-size:6.5px;fill:var(--muted)}
+svg.sb .ref{font-size:7px;font-weight:500}
+svg.sb .net{font-size:6.5px;fill:var(--ink);paint-order:stroke;stroke:var(--fr4);stroke-width:3px;stroke-linejoin:round}
+svg.sb .hvt{fill:var(--hv)}
+svg.sb .fr4{fill:var(--fr4);stroke:currentColor;stroke-width:.8}
+svg.sb .scrape{fill:var(--fr4);stroke:var(--hv);stroke-width:.6;stroke-dasharray:2 1.5}
+svg.sb .lead{stroke:var(--solder);stroke-width:1.4;fill:none}
+svg.sb .body{fill:var(--panel);stroke:currentColor;stroke-width:.8}
+svg.sb .tb{fill:var(--panel);fill-opacity:.8;stroke:currentColor;stroke-width:.8}
+svg.sb .sol{fill:var(--solder)}
+svg.sb .cut{fill:none;stroke:var(--hv);stroke-width:1.4}
+svg.sb .link{stroke:var(--link);stroke-width:1.6;fill:none;stroke-linecap:round}
+svg.sb .bus{stroke:var(--bus);stroke-width:1.8;fill:none;stroke-linecap:round}
+svg.sb .ldot{fill:var(--link)} svg.sb .bdot{fill:var(--bus)}
+
+.tbl{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:4px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--ground)}
+td code,.mono{font-family:var(--mono);font-size:12.5px}
+tr.grp td{font:600 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-bottom:1px solid var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:10px}
+ul,ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.warn{border-left:4px solid var(--hv);background:var(--hv-wash);padding:14px 16px;border-radius:0 4px 4px 0;display:flex;flex-direction:column;gap:8px}
+.warn h3{color:var(--hv)}
+@media print{
+  body{padding:0}
+  .draw{overflow:visible}
+  .draw svg{min-width:0!important}
+  .tbl{overflow:visible}
+  table{min-width:0!important}
+  figure,.warn,.card,tr{break-inside:avoid}
+  h2{break-after:avoid}
+}
+@page{size:letter;margin:12mm}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Stripboard layout · BusBoard ST2 (Digi-Key 4526-ST2-ND) · 100 × 80 mm · 31 strips × 39 holes</div>
+  <h1>Bench Meter Stripboard</h1>
+  <p class="lede">All the low-voltage conditioning (DC volts, ohms, the VACT loop resistor) and 24 V distribution on one ST2 stripboard, from the input jacks' fuses to the C0-4AD2DA-2 terminals. Positions are given as <b>strip / hole</b>: strips 1–31 run top to bottom, holes 1–39 left to right, viewed from the component side.</p>
+</header>
+
+<section>
+  <div class="warn">
+    <h3>120 VAC stays off this board</h3>
+    <p>Stripboard strips are only about 1 mm apart, the holes aren't plated, and you can't route an isolation slot. That's fine for 24 V, but not for mains. Run the cord through a panel-mount 5×20 fuse holder (<code>0218002.HXP</code>, 2 A slow-blow) and the panel switch straight to the PSB24's L / N / ⏚ terminals. The board starts at the PSB24's 24 V output.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Board — component side</h2>
+  <figure>
+    <div class="draw">
+    <svg class="sb" viewBox="-86 -26 572 380" role="img" aria-label="BusBoard ST2 stripboard layout. Strip 2 carries the DC input through PTC1, clamp D3 and R2 to node A at CH2, with R3 and D1 to 0 V on strip 6. Strip 10 carries the ohms output through PTC2 and clamp D2 to node B, then R4 to node E at OUT1 and CH4. Strip 18 is the VACT loop to CH1 with R1 to 0 V on strip 22. Strip 20 is plus 24 volts. Strip 30 holds the 24 volt and 0 volt distribution terminal blocks. A bare 0 V bus wire runs down hole 35.">
+      <defs>
+        <pattern id="strips" x="0" y="5" width="10" height="10" patternUnits="userSpaceOnUse">
+          <rect x="0" y="1.6" width="10" height="6.8" style="fill:var(--cu)"/>
+        </pattern>
+        <pattern id="holes" x="5" y="5" width="10" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="5" cy="5" r="1.5" style="fill:var(--ground)"/>
+        </pattern>
+      </defs>
+
+      <!-- board, strips -->
+      <rect class="fr4" x="0" y="0" width="400" height="320" rx="3"/>
+      <rect x="4" y="5" width="392" height="310" fill="url(#strips)"/>
+
+      <!-- scraped copper (isolation around fault inputs) -->
+      <rect class="scrape" x="4" y="6.6" width="81" height="6.8"/>
+      <rect class="scrape" x="4" y="26.6" width="81" height="6.8"/>
+      <rect class="scrape" x="4" y="86.6" width="81" height="6.8"/>
+      <rect class="scrape" x="4" y="106.6" width="81" height="6.8"/>
+
+      <rect x="5" y="5" width="390" height="310" fill="url(#holes)"/>
+
+      <!-- column / strip numbers -->
+      <g class="lab" text-anchor="middle">
+        <text x="10" y="-8">1</text><text x="50" y="-8">5</text><text x="100" y="-8">10</text><text x="150" y="-8">15</text>
+        <text x="200" y="-8">20</text><text x="250" y="-8">25</text><text x="300" y="-8">30</text><text x="350" y="-8">35</text><text x="390" y="-8">39</text>
+        <text x="200" y="-18">hole →</text>
+      </g>
+      <g class="lab" text-anchor="end">
+        <text x="-4" y="22">2</text><text x="-4" y="42">4</text><text x="-4" y="62">6</text><text x="-4" y="82">8</text>
+        <text x="-4" y="102">10</text><text x="-4" y="122">12</text><text x="-4" y="142">14</text><text x="-4" y="162">16</text>
+        <text x="-4" y="182">18</text><text x="-4" y="202">20</text><text x="-4" y="222">22</text><text x="-4" y="302">30</text>
+      </g>
+
+      <!-- net labels on strips -->
+      <text class="net" x="235" y="22.4">NODE A → CH2</text>
+      <text class="net" x="235" y="42.4">0 V</text>
+      <text class="net" x="235" y="62.4">0 V</text>
+      <text class="net" x="235" y="82.4">CH3 (node B)</text>
+      <text class="net" x="200" y="102.4">NODE E · 10 V excite</text>
+      <text class="net" x="235" y="122.4">0 V</text>
+      <text class="net" x="235" y="142.4">0 V</text>
+      <text class="net" x="235" y="162.4">CH4</text>
+      <text class="net" x="235" y="182.4">VACT LOOP → CH1</text>
+      <text class="net" x="235" y="202.4">+24 V</text>
+      <text class="net" x="235" y="222.4">0 V</text>
+      <text class="net hvt" x="12" y="3.2" style="stroke-width:0">scraped: strips 1, 3, 9, 11 · holes 1–8</text>
+
+      <!-- track cuts -->
+      <g>
+        <circle class="cut" cx="60" cy="20" r="4"/><path class="cut" d="M57,17 L63,23 M63,17 L57,23"/>
+        <circle class="cut" cx="130" cy="20" r="4"/><path class="cut" d="M127,17 L133,23 M133,17 L127,23"/>
+        <circle class="cut" cx="60" cy="100" r="4"/><path class="cut" d="M57,97 L63,103 M63,97 L57,103"/>
+        <circle class="cut" cx="130" cy="100" r="4"/><path class="cut" d="M127,97 L133,103 M133,97 L127,103"/>
+        <circle class="cut" cx="300" cy="200" r="4"/><path class="cut" d="M297,197 L303,203 M303,197 L297,203"/>
+        <circle class="cut" cx="180" cy="300" r="4"/><path class="cut" d="M177,297 L183,303 M183,297 L177,303"/>
+      </g>
+
+      <!-- 0 V bus wire, hole 35 -->
+      <line class="bus" x1="350" y1="40" x2="350" y2="300"/>
+      <g class="bdot">
+        <circle cx="350" cy="40" r="3"/><circle cx="350" cy="60" r="3"/><circle cx="350" cy="120" r="3"/><circle cx="350" cy="140" r="3"/>
+        <circle cx="350" cy="200" r="3"/><circle cx="350" cy="220" r="3"/><circle cx="350" cy="300" r="3"/>
+      </g>
+      <text class="lab" x="354" y="252" style="fill:var(--bus)">0 V bus</text>
+
+      <!-- wire links -->
+      <line class="link" x1="120" y1="100" x2="120" y2="80"/>
+      <line class="link" x1="330" y1="100" x2="330" y2="160"/>
+      <line class="link" x1="160" y1="200" x2="160" y2="300"/>
+      <g class="ldot">
+        <circle cx="120" cy="100" r="3"/><circle cx="120" cy="80" r="3"/>
+        <circle cx="330" cy="100" r="3"/><circle cx="330" cy="160" r="3"/>
+        <circle cx="160" cy="200" r="3"/><circle cx="160" cy="300" r="3"/>
+      </g>
+      <text class="lab" x="124" y="92" style="fill:var(--link)">L1</text>
+      <text class="lab" x="334" y="132" style="fill:var(--link)">L2</text>
+      <text class="lab" x="164" y="252" style="fill:var(--link)">L3 +24 V</text>
+
+      <!-- ===== components ===== -->
+      <!-- PTC1 2/5–2/7 -->
+      <line class="lead" x1="50" y1="20" x2="70" y2="20"/>
+      <rect class="body" x="45" y="13" width="30" height="8" rx="4"/>
+      <text class="ref" x="60" y="10" text-anchor="middle">PTC1</text>
+      <!-- D3 2/9 → 6/9 -->
+      <line class="lead" x1="90" y1="20" x2="90" y2="60"/>
+      <rect class="body" x="86" y="28" width="8" height="24" rx="2"/>
+      <text class="ref" x="97" y="44">D3</text>
+      <!-- R2 2/11 – 2/15 -->
+      <line class="lead" x1="110" y1="20" x2="150" y2="20"/>
+      <rect class="body" x="118" y="15.5" width="24" height="9" rx="3.5"/>
+      <text class="ref" x="130" y="12" text-anchor="middle">R2</text>
+      <!-- R3 2/18 → 6/18 -->
+      <line class="lead" x1="180" y1="20" x2="180" y2="60"/>
+      <rect class="body" x="175.5" y="28" width="9" height="24" rx="3.5"/>
+      <text class="ref" x="187" y="44">R3</text>
+      <!-- D1 2/21 → 6/21 -->
+      <line class="lead" x1="210" y1="20" x2="210" y2="60"/>
+      <rect class="body" x="206" y="28" width="8" height="24" rx="2"/>
+      <text class="ref" x="217" y="44">D1</text>
+
+      <!-- PTC2 10/5–10/7 -->
+      <line class="lead" x1="50" y1="100" x2="70" y2="100"/>
+      <rect class="body" x="45" y="93" width="30" height="8" rx="4"/>
+      <text class="ref" x="60" y="90" text-anchor="middle">PTC2</text>
+      <!-- D2 10/9 → 14/9 -->
+      <line class="lead" x1="90" y1="100" x2="90" y2="140"/>
+      <rect class="body" x="86" y="108" width="8" height="24" rx="2"/>
+      <text class="ref" x="97" y="124">D2</text>
+      <!-- R4 10/11 – 10/15 -->
+      <line class="lead" x1="110" y1="100" x2="150" y2="100"/>
+      <rect class="body" x="118" y="95.5" width="24" height="9" rx="3.5"/>
+      <text class="ref" x="142" y="92" text-anchor="middle">R4</text>
+
+      <!-- R1 18/6 → 22/6 -->
+      <line class="lead" x1="60" y1="180" x2="60" y2="220"/>
+      <rect class="body" x="55.5" y="188" width="9" height="24" rx="3.5"/>
+      <text class="ref" x="67" y="204">R1</text>
+
+      <!-- solder points for parts -->
+      <g class="sol">
+        <circle cx="50" cy="20" r="2.6"/><circle cx="70" cy="20" r="2.6"/>
+        <circle cx="90" cy="20" r="2.6"/><circle cx="90" cy="60" r="2.6"/>
+        <circle cx="110" cy="20" r="2.6"/><circle cx="150" cy="20" r="2.6"/>
+        <circle cx="180" cy="20" r="2.6"/><circle cx="180" cy="60" r="2.6"/>
+        <circle cx="210" cy="20" r="2.6"/><circle cx="210" cy="60" r="2.6"/>
+        <circle cx="50" cy="100" r="2.6"/><circle cx="70" cy="100" r="2.6"/>
+        <circle cx="90" cy="100" r="2.6"/><circle cx="90" cy="140" r="2.6"/>
+        <circle cx="110" cy="100" r="2.6"/><circle cx="150" cy="100" r="2.6"/>
+        <circle cx="60" cy="180" r="2.6"/><circle cx="60" cy="220" r="2.6"/>
+      </g>
+
+      <!-- ===== terminal blocks ===== -->
+      <!-- left: TB4 (2,4) TB5 (10,12) TB6 (18,20) pins at hole 2 -->
+      <rect class="tb" x="-8" y="10" width="36" height="40" rx="2"/>
+      <rect class="tb" x="-8" y="90" width="36" height="40" rx="2"/>
+      <rect class="tb" x="-8" y="170" width="36" height="40" rx="2"/>
+      <text class="ref" x="10" y="33" text-anchor="middle">TB4</text>
+      <text class="ref" x="10" y="113" text-anchor="middle">TB5</text>
+      <text class="ref" x="10" y="193" text-anchor="middle">TB6</text>
+      <!-- right: TB7 (2..8) TB8 (10..16) TB9 (18,20) pins at hole 37 -->
+      <rect class="tb" x="362" y="10" width="46" height="80" rx="2"/>
+      <rect class="tb" x="362" y="90" width="46" height="80" rx="2"/>
+      <rect class="tb" x="362" y="170" width="46" height="40" rx="2"/>
+      <text class="ref" x="392" y="53" text-anchor="middle">TB7</text>
+      <text class="ref" x="392" y="133" text-anchor="middle">TB8</text>
+      <text class="ref" x="392" y="193" text-anchor="middle">TB9</text>
+      <!-- bottom: TB10 (30/4,6,8) TB11 (30/10,12,14) TB12 (30/22,24,26) TB13 (30/28,30,32) -->
+      <rect class="tb" x="30" y="284" width="60" height="44" rx="2"/>
+      <rect class="tb" x="90" y="284" width="60" height="44" rx="2"/>
+      <rect class="tb" x="210" y="284" width="60" height="44" rx="2"/>
+      <rect class="tb" x="270" y="284" width="60" height="44" rx="2"/>
+      <text class="ref" x="60" y="292" text-anchor="middle">TB10</text>
+      <text class="ref" x="120" y="292" text-anchor="middle">TB11</text>
+      <text class="ref" x="240" y="292" text-anchor="middle">TB12</text>
+      <text class="ref" x="300" y="292" text-anchor="middle">TB13</text>
+      <!-- TB pins -->
+      <g class="sol">
+        <circle cx="20" cy="20" r="3.4"/><circle cx="20" cy="40" r="3.4"/>
+        <circle cx="20" cy="100" r="3.4"/><circle cx="20" cy="120" r="3.4"/>
+        <circle cx="20" cy="180" r="3.4"/><circle cx="20" cy="200" r="3.4"/>
+        <circle cx="370" cy="20" r="3.4"/><circle cx="370" cy="40" r="3.4"/><circle cx="370" cy="60" r="3.4"/><circle cx="370" cy="80" r="3.4"/>
+        <circle cx="370" cy="100" r="3.4"/><circle cx="370" cy="120" r="3.4"/><circle cx="370" cy="140" r="3.4"/><circle cx="370" cy="160" r="3.4"/>
+        <circle cx="370" cy="180" r="3.4"/><circle cx="370" cy="200" r="3.4"/>
+        <circle cx="40" cy="300" r="3.4"/><circle cx="60" cy="300" r="3.4"/><circle cx="80" cy="300" r="3.4"/>
+        <circle cx="100" cy="300" r="3.4"/><circle cx="120" cy="300" r="3.4"/><circle cx="140" cy="300" r="3.4"/>
+        <circle cx="220" cy="300" r="3.4"/><circle cx="240" cy="300" r="3.4"/><circle cx="260" cy="300" r="3.4"/>
+        <circle cx="280" cy="300" r="3.4"/><circle cx="300" cy="300" r="3.4"/><circle cx="320" cy="300" r="3.4"/>
+      </g>
+
+      <!-- left-edge wire labels -->
+      <g class="lab" text-anchor="end">
+        <text x="-20" y="22.4" class="hvt">DC+ ← F3</text><text x="-20" y="42.4">DC COM</text>
+        <text x="-20" y="102.4" class="hvt">Ω ← F4</text><text x="-20" y="122.4">Ω COM</text>
+        <text x="-20" y="182.4">VACT (−)</text><text x="-20" y="202.4">VACT (+)</text>
+      </g>
+      <!-- right-edge labels -->
+      <g class="lab">
+        <text x="412" y="22.4">CH2</text><text x="412" y="42.4">0V</text><text x="412" y="62.4">0V</text><text x="412" y="82.4">CH3</text>
+        <text x="412" y="102.4">OUT1</text><text x="412" y="122.4">0V</text><text x="412" y="142.4">0V</text><text x="412" y="162.4">CH4</text>
+        <text x="412" y="182.4">CH1</text><text x="412" y="202.4">0V</text>
+        <text x="412" y="-8">→ C0-4AD2DA-2</text>
+      </g>
+      <!-- bottom labels -->
+      <g class="lab" text-anchor="middle">
+        <text x="40" y="340">IN</text><text x="60" y="340">CPU</text><text x="80" y="340">MOD</text>
+        <text x="100" y="340">T8C</text><text x="120" y="340">C3</text><text x="140" y="340">PB</text>
+        <text x="220" y="340">IN</text><text x="240" y="340">CPU</text><text x="260" y="340">MOD</text>
+        <text x="280" y="340">T8C</text><text x="300" y="340">C1</text><text x="320" y="340">BUZ−</text>
+        <text x="90" y="350" style="fill:var(--hv)">+24 V (strip 30, holes 1–17)</text>
+        <text x="270" y="350" style="fill:var(--bus)">0 V (strip 30, holes 19–39)</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--cu)"></i>copper strip (underside)</span>
+        <span><i class="sw" style="border:1.5px dashed var(--hv)"></i>scrape copper off</span>
+        <span><i class="sw" style="border:2px solid var(--hv);border-radius:50%;width:12px;height:12px"></i>track cut</span>
+        <span><i class="sw" style="background:var(--link);height:3px"></i>insulated wire link</span>
+        <span><i class="sw" style="background:var(--bus);height:3px"></i>bare 0 V bus wire</span>
+      </div>
+      <p><b>Each channel runs along one strip, with cuts separating the stages.</b> On strip 2, the DC input goes through PTC1 into D3's clamp, then R2 steps it across a cut onto node A, which runs to CH2. Strip 10 does the same for ohms: PTC2 into node B at D2, then R4 across a cut to node E, which is the 10 V excitation from OUT1. <b>Every 0 V strip ties to one bare wire along hole 35 on the component side.</b> Solder it only at the green dots. The copper is scraped off strips 1, 3, 9 and 11 next to the two input segments, so a 480 V mistake on DC+ or Ω has about 4 mm of bare board to jump instead of 1 mm.</p>
+    </figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Build list</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Cuts and prep (copper side)</h3>
+      <div class="tbl" style="border:none"><table style="min-width:0"><tbody>
+        <tr><td class="mono">Cut</td><td>strip 2 at hole 6 and hole 13</td></tr>
+        <tr><td class="mono">Cut</td><td>strip 10 at hole 6 and hole 13</td></tr>
+        <tr><td class="mono">Cut</td><td>strip 20 at hole 30</td></tr>
+        <tr><td class="mono">Cut</td><td>strip 30 at hole 18</td></tr>
+        <tr><td class="mono">Scrape</td><td>strips 1, 3, 9, 11 from hole 1 to hole 8. Remove all copper, then check with a meter.</td></tr>
+        <tr><td class="mono">Drill</td><td>every terminal-block hole to 1.3 mm. The ST2's 0.94 mm holes are too small for the MKDS pins.</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="card">
+      <h3>Wires</h3>
+      <div class="tbl" style="border:none"><table style="min-width:0"><tbody>
+        <tr><td class="mono">L1</td><td>10/12 → 8/12 · node B to the CH3 strip</td></tr>
+        <tr><td class="mono">L2</td><td>10/33 → 16/33 · node E to the CH4 strip</td></tr>
+        <tr><td class="mono">L3</td><td>20/16 → 30/16 · +24 V to the distribution strip</td></tr>
+        <tr><td class="mono">Bus</td><td>bare wire down hole 35, soldered at strips 4, 6, 12, 14, 20, 22 and 30 only</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+
+  <div class="tbl">
+  <table>
+    <thead><tr><th>Part</th><th>Value / part #</th><th>Holes (strip/hole)</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr class="grp"><td colspan="4">DC volts</td></tr>
+      <tr><td>PTC1</td><td>TR600-150</td><td>2/5 – 2/7</td><td>Straddles the cut at 2/6</td></tr>
+      <tr><td>D3</td><td>P6KE39CA</td><td>2/9 – 6/9</td><td>Stands across strips 3–5. Bidirectional, so either way round.</td></tr>
+      <tr><td>R2</td><td>20 kΩ RN55E2002BB14</td><td>2/11 – 2/15</td><td>Lies along strip 2, straddling the cut at 2/13</td></tr>
+      <tr><td>R3</td><td>10.7 kΩ RN55E1072BB14</td><td>2/18 – 6/18</td><td></td></tr>
+      <tr><td>D1</td><td>P6KE15CA</td><td>2/21 – 6/21</td><td></td></tr>
+      <tr class="grp"><td colspan="4">Ohms</td></tr>
+      <tr><td>PTC2</td><td>TR600-150</td><td>10/5 – 10/7</td><td>Straddles the cut at 10/6</td></tr>
+      <tr><td>D2</td><td>P6KE15CA</td><td>10/9 – 14/9</td><td></td></tr>
+      <tr><td>R4</td><td>2 kΩ RN55E2001BB14</td><td>10/11 – 10/15</td><td>Straddles the cut at 10/13</td></tr>
+      <tr class="grp"><td colspan="4">AC transducer loop</td></tr>
+      <tr><td>R1</td><td>250 Ω RN55E2500BB14</td><td>18/6 – 22/6</td><td>Stands across strips 19–21</td></tr>
+      <tr class="grp"><td colspan="4">Terminal blocks (Phoenix MKDS 1,5 · 5.08 mm)</td></tr>
+      <tr><td>TB4</td><td>1715721 (2-pos)</td><td>2/2, 4/2</td><td>DC+ from F3 · DC COM jack</td></tr>
+      <tr><td>TB5</td><td>1715721 (2-pos)</td><td>10/2, 12/2</td><td>Ω from F4 · Ω COM jack</td></tr>
+      <tr><td>TB6</td><td>1715721 (2-pos)</td><td>18/2, 20/2</td><td>VACT (−) · VACT (+)</td></tr>
+      <tr><td>TB7</td><td>1715747 (4-pos)</td><td>2, 4, 6, 8 / 37</td><td>CH2 · 0V · 0V · CH3</td></tr>
+      <tr><td>TB8</td><td>1715747 (4-pos)</td><td>10, 12, 14, 16 / 37</td><td>OUT1 · 0V · 0V · CH4</td></tr>
+      <tr><td>TB9</td><td>1715721 (2-pos)</td><td>18, 20 / 37</td><td>CH1 · 0V</td></tr>
+      <tr><td>TB10, TB11</td><td>1715734 (3-pos) ×2</td><td>30 / 4, 6, 8 · 10, 12, 14</td><td>+24 V: PSB24 +V · CPU · module · T8C · C3 · pushbuttons</td></tr>
+      <tr><td>TB12, TB13</td><td>1715734 (3-pos) ×2</td><td>30 / 22, 24, 26 · 28, 30, 32</td><td>0 V: PSB24 −V · CPU · module · T8C · C1 · buzzer (−)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="lede" style="font-size:13.5px">Terminal blocks needed: 1715721 ×4, 1715747 ×2, 1715734 ×4. That's fewer than the earlier PCB list, since TB1–TB3 and the F5 holder moved off-board.</p>
+</section>
+
+<section>
+  <div class="warn">
+    <h3>Before power-up</h3>
+    <ol>
+      <li>Hold the board up to a light and check every cut and scraped area. No copper bridges, and no solder bridges between strips.</li>
+      <li>Ohmmeter checks with nothing connected: strip 2 (holes 1–5) to anything should read open. Strip 20 (+24) to any 0 V strip should read open. Strip 4 to strip 30 hole 25 should read 0 Ω (bus OK).</li>
+      <li>Single-sided pads lift easily. Support the terminal blocks with a dab of epoxy or hot glue, and hold the block while you tighten screws.</li>
+      <li>Apply 24 V only. Check +24 at TB10 and 0 V at TB12, then follow the same bring-up as the wiring page: DC channel, then ohms (1 kΩ gives about 3.33 V at CH3), then the VACT loop.</li>
+    </ol>
+  </div>
+</section>
+
+</div>
