@@ -77,7 +77,7 @@ ul,ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
   <h2>Layout — front view</h2>
   <figure>
     <div class="draw">
-    <svg class="fp" viewBox="-24 -22 460 356" role="img" aria-label="Front panel 406 by 305 millimetres. The EA7-T8C cutout, 235 by 179.7 millimetres, is at the top left with its bezel outline around it. On the right, the power selector and power-on light are on the top row, the HOLD and REL pushbuttons below them, and the continuity buzzer below those. Along the bottom are the DC volts jacks, the ohms jacks, and at the far right the AC volts jacks inside a red-dashed 480 volt zone.">
+    <svg class="fp" viewBox="-24 -22 460 356" role="img" aria-label="Front panel 406 by 305 millimetres. The EA7-T8C cutout, 235 by 179.7 millimetres, is at the top left with its bezel outline around it. On the right, the power selector and power-on light are on the top row, and the continuity buzzer below them. HOLD and REL are touch buttons on the screen. Along the bottom are the DC volts jacks, the ohms jacks, and at the far right the AC volts jacks inside a red-dashed 480 volt zone.">
       <!-- panel -->
       <rect class="plate" x="0" y="0" width="406" height="305" rx="3"/>
 
@@ -93,18 +93,14 @@ ul,ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <g>
         <circle class="ghost" cx="330" cy="45" r="15"/><circle class="hole" cx="330" cy="45" r="11.15"/>
         <circle class="ghost" cx="380" cy="45" r="15"/><circle class="hole" cx="380" cy="45" r="11.15"/>
-        <circle class="ghost" cx="330" cy="110" r="15"/><circle class="hole" cx="330" cy="110" r="11.15"/>
-        <circle class="ghost" cx="380" cy="110" r="15"/><circle class="hole" cx="380" cy="110" r="11.15"/>
-        <circle class="ghost" cx="355" cy="175" r="15"/><circle class="hole" cx="355" cy="175" r="11.15"/>
+        <circle class="ghost" cx="355" cy="110" r="15"/><circle class="hole" cx="355" cy="110" r="11.15"/>
       </g>
       <g class="leg" text-anchor="middle">
         <text x="330" y="70">POWER</text><text x="380" y="70">ON</text>
-        <text x="330" y="135">HOLD</text><text x="380" y="135">REL</text>
-        <text x="355" y="200">BEEP</text>
+        <text x="355" y="135">BEEP</text>
       </g>
       <g class="sm" text-anchor="middle">
         <text x="330" y="75.5">OFF · ON</text>
-        <text x="380" y="140.5">zero</text>
       </g>
 
       <!-- jacks -->
@@ -159,9 +155,7 @@ ul,ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <tr class="grp"><td colspan="5">Controls (22 mm, 30 mm bezels)</td></tr>
       <tr><td>S1</td><td>GCX3300 selector, 2-pos maintained</td><td class="m">Ø 22.3</td><td class="m">330, 45</td><td>POWER · OFF / ON</td></tr>
       <tr><td>PL1</td><td>ECX2052-24L green LED pilot, 24 V</td><td class="m">Ø 22.3</td><td class="m">380, 45</td><td>ON</td></tr>
-      <tr><td>PB1</td><td>GCX1100 momentary, black, 1 N.O.</td><td class="m">Ø 22.3</td><td class="m">330, 110</td><td>HOLD → CPU X1</td></tr>
-      <tr><td>PB2</td><td>GCX1100 momentary, black, 1 N.O.</td><td class="m">Ø 22.3</td><td class="m">380, 110</td><td>REL → CPU X2</td></tr>
-      <tr><td>BZ1</td><td>ECX2070-24 buzzer</td><td class="m">Ø 22.3</td><td class="m">355, 175</td><td>BEEP → CPU Y1</td></tr>
+      <tr><td>BZ1</td><td>ECX2070-24 buzzer</td><td class="m">Ø 22.3</td><td class="m">355, 110</td><td>BEEP → CPU Y1</td></tr>
       <tr class="grp"><td colspan="5">Input jacks (Pomona 72913)</td></tr>
       <tr><td>J1 / J2</td><td>72913-2 red · 72913-0 black</td><td class="m">Ø 14.5</td><td class="m">40, 275 · 59.05, 275</td><td>DC V · + / COM · 30 V MAX</td></tr>
       <tr><td>J3 / J4</td><td>72913-2 red · 72913-0 black</td><td class="m">Ø 14.5</td><td class="m">115, 275 · 134.05, 275</td><td>Ω · CONT · Ω / COM</td></tr>
@@ -179,7 +173,7 @@ ul,ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <ul>
         <li><b>S1 POWER</b> switches the 120 VAC line (L) between the fuse and the PSB24. The GCX3300 contact block is rated for mains, but check that it's 1 N.O. and order a second block if you want to switch both L and N.</li>
         <li><b>PL1 ON</b> goes across +24 V / 0 V (TB10 / TB12 on the stripboard). It lights when the 24 V supply is up.</li>
-        <li><b>PB1, PB2</b> each go from +24 V (stripboard TB11 "PB") to CPU X1 / X2.</li>
+        <li><b>HOLD and REL</b> are touch buttons on the EA7-T8C. There are no pushbuttons to wire.</li>
         <li><b>BZ1</b>: (+) to CPU Y1, (−) to 0 V (stripboard TB13 "BUZ−").</li>
         <li><b>J1–J4</b> go to the stripboard through F3 / F4 as before. <b>J5 / J6</b> go only to F1 / F2 and the VACT.</li>
       </ul>

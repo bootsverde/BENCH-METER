@@ -118,8 +118,6 @@ ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     <thead><tr><th>Address</th><th>Nickname</th><th>What it is</th></tr></thead>
     <tbody>
       <tr class="grp"><td colspan="3">Physical I/O</td></tr>
-      <tr><td>X001</td><td>HOLD_PB</td><td>Panel pushbutton HOLD</td></tr>
-      <tr><td>X002</td><td>REL_PB</td><td>Panel pushbutton REL</td></tr>
       <tr><td>Y001</td><td>BEEPER</td><td>Continuity buzzer ECX2070-24 · sourcing output, 0.1 A max</td></tr>
       <tr class="grp"><td colspan="3">Analog (float, volts)</td></tr>
       <tr><td>DF1</td><td>AI_ACV</td><td>CH1: VACT loop across R1, 1–5 V</td></tr>
@@ -252,14 +250,14 @@ const R=[
  {c:[[NO('C52','MODE_DCV')]], o:[OUT('Copy','DF14 → DF40','LIVE')], w:''},
  {c:[[NO('C53','MODE_OHM')]], o:[OUT('Copy','DF15 → DF40','LIVE')], w:'Route the active mode\'s filtered value to LIVE.'},
  {c:[[NO('C51','MODE_ACV'),NO('C10','ACV_OL')],[NO('C51','MODE_ACV'),NO('C14','LOOP_FLT')],[NO('C52','MODE_DCV'),NO('C11','DCV_OL')],[NO('C53','MODE_OHM'),NO('C12','OHM_OPEN')],[NO('C53','MODE_OHM'),NO('C13','EXCITE_FLT')]], o:[OUT('Out','C44','SHOW_OL')], w:'Show "OL" on the panel when the active function is over-range or faulted.'},
- {s:'HOLD toggle (X001 or panel)'},
- {c:[[UP('X001','HOLD_PB')],[UP('C1','HMI_HOLD')]], o:[OUT('Out','C30','HOLD_PULSE')], w:'Either button gives a one-scan pulse.'},
+ {s:'HOLD toggle (touch button)'},
+ {c:[[UP('C1','HMI_HOLD')]], o:[OUT('Out','C30','HOLD_PULSE')], w:'The HOLD touch button gives a one-scan pulse.'},
  {c:[[NO('C30','HOLD_PULSE'),NC('C20','HOLD_ON')]], o:[OUT('Out','C32','HOLD_SETCMD')], w:''},
  {c:[[NO('C30','HOLD_PULSE'),NO('C20','HOLD_ON')]], o:[OUT('Out','C33','HOLD_RSTCMD')], w:'Decide the direction before changing the latch, so it flips exactly once per press.'},
  {c:[[NO('C32','HOLD_SETCMD')]], o:[OUT('Set','C20','HOLD_ON')], w:''},
  {c:[[NO('C33','HOLD_RSTCMD')]], o:[OUT('Reset','C20','HOLD_ON')], w:''},
- {s:'REL (zero) toggle (X002 or panel)'},
- {c:[[UP('X002','REL_PB')],[UP('C2','HMI_REL')]], o:[OUT('Out','C34','REL_PULSE')], w:''},
+ {s:'REL (zero) toggle (touch button)'},
+ {c:[[UP('C2','HMI_REL')]], o:[OUT('Out','C34','REL_PULSE')], w:''},
  {c:[[NO('C34','REL_PULSE'),NC('C21','REL_ON')]], o:[OUT('Out','C35','REL_SETCMD')], w:''},
  {c:[[NO('C34','REL_PULSE'),NO('C21','REL_ON')]], o:[OUT('Out','C36','REL_RSTCMD')], w:''},
  {c:[[NO('C35','REL_SETCMD')]], o:[OUT('Set','C21','REL_ON'),OUT('Copy','DF40 → DF31','REL_OFFSET')], w:'Turning REL on captures the present reading as the zero. With the leads shorted in Ω, that nulls out the leads and PTC2.'},
