@@ -60,7 +60,7 @@ svg.hmi .btn:focus-visible rect.face{stroke:#FFD166;stroke-width:3}
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">C-more EA7-T8C · 800 × 600 · CLICK serial driver · Rev A</div>
+  <div class="eyebrow">C-more EA7-T8C · 640 × 480 · CLICK serial driver · Rev A</div>
   <h1>Bench Meter Screens</h1>
   <p class="lede">Two screens for the EA7-T8C: the main meter and a setup screen. The mockups below work like the real thing, so tap the buttons to see how each mode, HOLD, REL and MIN/MAX behave. The tables give every object's position, size, tag and settings to build it in the C-more Programming Software.</p>
 </header>
@@ -69,7 +69,7 @@ svg.hmi .btn:focus-visible rect.face{stroke:#FFD166;stroke-width:3}
   <h2>Screen 1 · Meter</h2>
   <figure>
     <div class="bezel">
-      <svg class="hmi" id="meter" viewBox="0 0 800 600" role="img" aria-label="Mockup of the 800 by 600 meter screen: mode buttons on the left, a large reading with units in the centre, HOLD, REL and MIN/MAX reset buttons on the right, MIN and MAX readouts, a 60 second trend graph and a status bar with a setup button.">
+      <svg class="hmi" id="meter" viewBox="0 0 640 480" role="img" aria-label="Mockup of the 640 by 480 meter screen: mode buttons on the left, a large reading with units in the centre, HOLD, REL and MIN/MAX reset buttons on the right, MIN and MAX readouts, a 60 second trend graph and a status bar with a setup button."><g transform="scale(0.8)">
         <rect width="800" height="600" fill="#0E1215"/>
         <!-- header -->
         <rect x="0" y="0" width="800" height="56" fill="#1A2126"/>
@@ -147,7 +147,7 @@ svg.hmi .btn:focus-visible rect.face{stroke:#FFD166;stroke-width:3}
           <rect class="face" x="700" y="564" width="84" height="32" rx="5" fill="#2C353B" stroke="#44515A" stroke-width="1.5"/>
           <text x="742" y="587" fill="#C9D4DA" font-size="18" font-weight="600" text-anchor="middle">SETUP</text>
         </g>
-      </svg>
+      </g></svg>
     </div>
     <figcaption>
       <span><b>Try it:</b> tap a mode, HOLD, REL or MIN/MAX. The mockup uses sample readings, not live data.</span>
@@ -165,43 +165,43 @@ svg.hmi .btn:focus-visible rect.face{stroke:#FFD166;stroke-width:3}
     <tbody>
       <tr class="grp"><td colspan="4">Background &amp; header</td></tr>
       <tr><td>Screen background</td><td class="m">—</td><td class="m">—</td><td>Screen color <span class="sw" style="background:#0E1215"></span>#0E1215</td></tr>
-      <tr><td>Rectangle (header bar)</td><td class="m">0, 0 · 800 × 56</td><td class="m">—</td><td><span class="sw" style="background:#1A2126"></span>#1A2126</td></tr>
-      <tr><td>Static Text "BENCH METER"</td><td class="m">16, 10</td><td class="m">—</td><td>28 pt bold, white</td></tr>
-      <tr><td>Lookup Text (mode name)</td><td class="m">300, 12 · 200 × 34</td><td class="m">DS1 MODE</td><td>1 = "AC VOLTS", 2 = "DC VOLTS", 3 = "OHMS", centred, 22 pt</td></tr>
-      <tr><td>Indicator Text "HOLD"</td><td class="m">560, 14 · 68 × 28</td><td class="m">C20 HOLD_ON</td><td>On: amber text on dark amber. Off: invisible (same as background).</td></tr>
-      <tr><td>Indicator Text "REL"</td><td class="m">636, 14 · 56 × 28</td><td class="m">C21 REL_ON</td><td>On: blue on dark blue. Off: invisible.</td></tr>
-      <tr><td>Indicator Text "BEEP ON / OFF"</td><td class="m">700, 14 · 84 × 28</td><td class="m">C5 BEEP_EN</td><td>On: "BEEP ON" green. Off: "BEEP OFF" grey.</td></tr>
+      <tr><td>Rectangle (header bar)</td><td class="m">0, 0 · 640 × 45</td><td class="m">—</td><td><span class="sw" style="background:#1A2126"></span>#1A2126</td></tr>
+      <tr><td>Static Text "BENCH METER"</td><td class="m">13, 8</td><td class="m">—</td><td>22 pt bold, white</td></tr>
+      <tr><td>Lookup Text (mode name)</td><td class="m">240, 10 · 160 × 27</td><td class="m">DS1 MODE</td><td>1 = "AC VOLTS", 2 = "DC VOLTS", 3 = "OHMS", centred, 18 pt</td></tr>
+      <tr><td>Indicator Text "HOLD"</td><td class="m">448, 11 · 54 × 22</td><td class="m">C20 HOLD_ON</td><td>On: amber text on dark amber. Off: invisible (same as background).</td></tr>
+      <tr><td>Indicator Text "REL"</td><td class="m">509, 11 · 45 × 22</td><td class="m">C21 REL_ON</td><td>On: blue on dark blue. Off: invisible.</td></tr>
+      <tr><td>Indicator Text "BEEP ON / OFF"</td><td class="m">560, 11 · 67 × 22</td><td class="m">C5 BEEP_EN</td><td>On: "BEEP ON" green. Off: "BEEP OFF" grey.</td></tr>
 
       <tr class="grp"><td colspan="4">Mode buttons (left)</td></tr>
-      <tr><td>Pushbutton "AC V"</td><td class="m">16, 72 · 150 × 92</td><td class="m">C6 HMI_ACV</td><td>Momentary On. Lamp tag <code>C51</code>: lamp on = accent border / bright face.</td></tr>
-      <tr><td>Pushbutton "DC V"</td><td class="m">16, 176 · 150 × 92</td><td class="m">C7 HMI_DCV</td><td>Momentary On. Lamp tag <code>C52</code>.</td></tr>
-      <tr><td>Pushbutton "Ω"</td><td class="m">16, 280 · 150 × 92</td><td class="m">C8 HMI_OHM</td><td>Momentary On. Lamp tag <code>C53</code>.</td></tr>
+      <tr><td>Pushbutton "AC V"</td><td class="m">13, 58 · 120 × 74</td><td class="m">C6 HMI_ACV</td><td>Momentary On. Lamp tag <code>C51</code>: lamp on = accent border / bright face.</td></tr>
+      <tr><td>Pushbutton "DC V"</td><td class="m">13, 141 · 120 × 74</td><td class="m">C7 HMI_DCV</td><td>Momentary On. Lamp tag <code>C52</code>.</td></tr>
+      <tr><td>Pushbutton "Ω"</td><td class="m">13, 224 · 120 × 74</td><td class="m">C8 HMI_OHM</td><td>Momentary On. Lamp tag <code>C53</code>.</td></tr>
 
       <tr class="grp"><td colspan="4">Reading (centre)</td></tr>
-      <tr><td>Rectangle (reading well)</td><td class="m">182, 72 · 436 × 200</td><td class="m">—</td><td><span class="sw" style="background:#050708"></span>#050708, 2 px border #2A3238</td></tr>
-      <tr><td>Numeric Display (AC)</td><td class="m">196, 96 · 340 × 120</td><td class="m">DF30 DISPLAY</td><td>Float, 4 whole digits · <b>1 decimal</b> · right-aligned · ~110 pt · visible when <code>C51</code> on</td></tr>
-      <tr><td>Numeric Display (DC)</td><td class="m">196, 96 · 340 × 120</td><td class="m">DF30 DISPLAY</td><td>Same spot · 2 whole digits · <b>3 decimals</b> · visible when <code>C52</code> on</td></tr>
-      <tr><td>Numeric Display (Ω)</td><td class="m">196, 96 · 340 × 120</td><td class="m">DF30 DISPLAY</td><td>Same spot · 6 whole digits · <b>1 decimal</b> · visible when <code>C53</code> on</td></tr>
-      <tr><td>Lookup Text (units)</td><td class="m">540, 160 · 70 × 50</td><td class="m">DS1 MODE</td><td>1 = "VAC", 2 = "VDC", 3 = "Ω", 40 pt, right-aligned</td></tr>
-      <tr><td>Indicator Text "OL"</td><td class="m">196, 96 · 408 × 120</td><td class="m">C44 SHOW_OL</td><td>On: red "OL", 120 pt, <b>with a solid background that covers the number</b>. Off: invisible. Place it on top of the three displays.</td></tr>
+      <tr><td>Rectangle (reading well)</td><td class="m">146, 58 · 349 × 160</td><td class="m">—</td><td><span class="sw" style="background:#050708"></span>#050708, 2 px border #2A3238</td></tr>
+      <tr><td>Numeric Display (AC)</td><td class="m">157, 77 · 272 × 96</td><td class="m">DF30 DISPLAY</td><td>Float, 4 whole digits · <b>1 decimal</b> · right-aligned · ~88 pt · visible when <code>C51</code> on</td></tr>
+      <tr><td>Numeric Display (DC)</td><td class="m">157, 77 · 272 × 96</td><td class="m">DF30 DISPLAY</td><td>Same spot · 2 whole digits · <b>3 decimals</b> · visible when <code>C52</code> on</td></tr>
+      <tr><td>Numeric Display (Ω)</td><td class="m">157, 77 · 272 × 96</td><td class="m">DF30 DISPLAY</td><td>Same spot · 6 whole digits · <b>1 decimal</b> · visible when <code>C53</code> on</td></tr>
+      <tr><td>Lookup Text (units)</td><td class="m">432, 128 · 56 × 40</td><td class="m">DS1 MODE</td><td>1 = "VAC", 2 = "VDC", 3 = "Ω", 32 pt, right-aligned</td></tr>
+      <tr><td>Indicator Text "OL"</td><td class="m">157, 77 · 326 × 96</td><td class="m">C44 SHOW_OL</td><td>On: red "OL", 96 pt, <b>with a solid background that covers the number</b>. Off: invisible. Place it on top of the three displays.</td></tr>
 
       <tr class="grp"><td colspan="4">MIN / MAX</td></tr>
-      <tr><td>Rectangle + Static Text "MIN"</td><td class="m">182, 284 · 212 × 88</td><td class="m">—</td><td>#151B1F, label 18 pt grey</td></tr>
-      <tr><td>Numeric Display (min)</td><td class="m">250, 316 · 132 × 48</td><td class="m">DF32 MIN_VAL</td><td>2 decimals, 40 pt, right-aligned</td></tr>
-      <tr><td>Rectangle + Static Text "MAX"</td><td class="m">406, 284 · 212 × 88</td><td class="m">—</td><td>as above</td></tr>
-      <tr><td>Numeric Display (max)</td><td class="m">474, 316 · 132 × 48</td><td class="m">DF33 MAX_VAL</td><td>2 decimals, 40 pt, right-aligned</td></tr>
+      <tr><td>Rectangle + Static Text "MIN"</td><td class="m">146, 227 · 170 × 70</td><td class="m">—</td><td>#151B1F, label 14 pt grey</td></tr>
+      <tr><td>Numeric Display (min)</td><td class="m">200, 253 · 106 × 38</td><td class="m">DF32 MIN_VAL</td><td>2 decimals, 32 pt, right-aligned</td></tr>
+      <tr><td>Rectangle + Static Text "MAX"</td><td class="m">325, 227 · 170 × 70</td><td class="m">—</td><td>as above</td></tr>
+      <tr><td>Numeric Display (max)</td><td class="m">379, 253 · 106 × 38</td><td class="m">DF33 MAX_VAL</td><td>2 decimals, 32 pt, right-aligned</td></tr>
 
       <tr class="grp"><td colspan="4">Function buttons (right)</td></tr>
-      <tr><td>Pushbutton "HOLD"</td><td class="m">634, 72 · 150 × 92</td><td class="m">C1 HMI_HOLD</td><td>Momentary On. Lamp tag <code>C20</code> (lit while holding).</td></tr>
-      <tr><td>Pushbutton "REL"</td><td class="m">634, 176 · 150 × 92</td><td class="m">C2 HMI_REL</td><td>Momentary On. Lamp tag <code>C21</code>.</td></tr>
-      <tr><td>Pushbutton "MIN / MAX reset"</td><td class="m">634, 280 · 150 × 92</td><td class="m">C3 HMI_MMRESET</td><td>Momentary On</td></tr>
+      <tr><td>Pushbutton "HOLD"</td><td class="m">507, 58 · 120 × 74</td><td class="m">C1 HMI_HOLD</td><td>Momentary On. Lamp tag <code>C20</code> (lit while holding).</td></tr>
+      <tr><td>Pushbutton "REL"</td><td class="m">507, 141 · 120 × 74</td><td class="m">C2 HMI_REL</td><td>Momentary On. Lamp tag <code>C21</code>.</td></tr>
+      <tr><td>Pushbutton "MIN / MAX reset"</td><td class="m">507, 224 · 120 × 74</td><td class="m">C3 HMI_MMRESET</td><td>Momentary On</td></tr>
 
       <tr class="grp"><td colspan="4">Trend &amp; status</td></tr>
-      <tr><td>Trend Graph</td><td class="m">16, 388 · 768 × 160</td><td class="m">DF30 DISPLAY</td><td>Sample every 0.5 s · 120 samples (60 s) · auto-scale off. Set the range per mode, or use 0–500 as a compromise. Line #4ED488.</td></tr>
-      <tr><td>Rectangle (status bar)</td><td class="m">0, 560 · 800 × 40</td><td class="m">—</td><td>#1A2126</td></tr>
-      <tr><td>Indicator Text (excitation)</td><td class="m">16, 566 · 420 × 28</td><td class="m">C13 EXCITE_FLT</td><td>On: "Ω excitation lost — check F4 / PTC2" in red</td></tr>
-      <tr><td>Indicator Text (VACT loop)</td><td class="m">16, 566 · 420 × 28</td><td class="m">C14 LOOP_FLT</td><td>On: "VACT loop open — check TB6 wiring" in red. Visible only in AC mode (<code>C51</code>).</td></tr>
-      <tr><td>Screen Selector "SETUP"</td><td class="m">700, 564 · 84 × 32</td><td class="m">—</td><td>Go to screen 2. Optionally password-protect it.</td></tr>
+      <tr><td>Trend Graph</td><td class="m">13, 310 · 614 × 128</td><td class="m">DF30 DISPLAY</td><td>Sample every 0.5 s · 120 samples (60 s) · auto-scale off. Set the range per mode, or use 0–500 as a compromise. Line #4ED488.</td></tr>
+      <tr><td>Rectangle (status bar)</td><td class="m">0, 448 · 640 × 32</td><td class="m">—</td><td>#1A2126</td></tr>
+      <tr><td>Indicator Text (excitation)</td><td class="m">13, 453 · 336 × 22</td><td class="m">C13 EXCITE_FLT</td><td>On: "Ω excitation lost — check F4 / PTC2" in red</td></tr>
+      <tr><td>Indicator Text (VACT loop)</td><td class="m">13, 453 · 336 × 22</td><td class="m">C14 LOOP_FLT</td><td>On: "VACT loop open — check TB6 wiring" in red. Visible only in AC mode (<code>C51</code>).</td></tr>
+      <tr><td>Screen Selector "SETUP"</td><td class="m">560, 451 · 67 × 26</td><td class="m">—</td><td>Go to screen 2. Optionally password-protect it.</td></tr>
     </tbody>
   </table>
   </div>
@@ -211,7 +211,7 @@ svg.hmi .btn:focus-visible rect.face{stroke:#FFD166;stroke-width:3}
   <h2>Screen 2 · Setup</h2>
   <figure>
     <div class="bezel">
-      <svg class="hmi" viewBox="0 0 800 600" role="img" aria-label="Mockup of the setup screen: DC calibration entry, beeper toggle, live raw input voltages for all four channels, and a back button.">
+      <svg class="hmi" viewBox="0 0 640 480" role="img" aria-label="Mockup of the setup screen: DC calibration entry, beeper toggle, live raw input voltages for all four channels, and a back button."><g transform="scale(0.8)">
         <rect width="800" height="600" fill="#0E1215"/>
         <rect x="0" y="0" width="800" height="56" fill="#1A2126"/>
         <text x="16" y="37" fill="#E8EDF0" font-size="28" font-weight="700" letter-spacing="1.5">SETUP</text>
@@ -244,18 +244,18 @@ svg.hmi .btn:focus-visible rect.face{stroke:#FFD166;stroke-width:3}
         <text x="116" y="533" fill="#E8EDF0" font-size="26" font-weight="700" text-anchor="middle">◀ METER</text>
         <rect x="0" y="560" width="800" height="40" fill="#1A2126"/>
         <text x="16" y="587" fill="#8B9AA4" font-size="19">CLICK Port 2 · 38400 8-O-1 · node 1</text>
-      </svg>
+      </g></svg>
     </div>
   </figure>
   <div class="tbl">
   <table>
     <thead><tr><th>Object (C-more type)</th><th>X, Y · W × H</th><th>Tag / address</th><th>Settings</th></tr></thead>
     <tbody>
-      <tr><td>Numeric Entry (DC factor)</td><td class="m">32, 148 · 200 × 72</td><td class="m">DF20 DCV_CAL</td><td>Float, 1 whole digit · 4 decimals · <b>min 2.9, max 3.1</b>, so a typo can't wreck the scaling</td></tr>
-      <tr><td>Toggle Pushbutton</td><td class="m">424, 148 · 160 × 72</td><td class="m">C5 BEEP_EN</td><td>Toggle · on "ON" green, off "OFF" grey</td></tr>
-      <tr><td>Numeric Display ×4</td><td class="m">250, 324 · 110 × 28 (step 40)</td><td class="m">DF1 · DF2 · DF3 · DF4</td><td>3 decimals, right-aligned, 20 pt</td></tr>
-      <tr><td>Static Text ×8</td><td class="m">labels at x 32 and x 376</td><td class="m">—</td><td>Channel names and expected values, as shown</td></tr>
-      <tr><td>Screen Selector "◀ METER"</td><td class="m">16, 494 · 200 × 60</td><td class="m">—</td><td>Go to screen 1</td></tr>
+      <tr><td>Numeric Entry (DC factor)</td><td class="m">26, 118 · 160 × 58</td><td class="m">DF20 DCV_CAL</td><td>Float, 1 whole digit · 4 decimals · <b>min 2.9, max 3.1</b>, so a typo can't wreck the scaling</td></tr>
+      <tr><td>Toggle Pushbutton</td><td class="m">339, 118 · 128 × 58</td><td class="m">C5 BEEP_EN</td><td>Toggle · on "ON" green, off "OFF" grey</td></tr>
+      <tr><td>Numeric Display ×4</td><td class="m">200, 259 · 88 × 22 (step 32)</td><td class="m">DF1 · DF2 · DF3 · DF4</td><td>3 decimals, right-aligned, 16 pt</td></tr>
+      <tr><td>Static Text ×8</td><td class="m">labels at x 26 and x 301</td><td class="m">—</td><td>Channel names and expected values, as shown</td></tr>
+      <tr><td>Screen Selector "◀ METER"</td><td class="m">13, 395 · 160 × 48</td><td class="m">—</td><td>Go to screen 1</td></tr>
     </tbody>
   </table>
   </div>

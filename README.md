@@ -12,7 +12,7 @@ A three-function bench meter built from AutomationDirect CLICK PLC parts and a C
 |---|---|
 | PLC | CLICK C0-02DD2-D (4 DC in, 4 sourcing out, 3 serial ports) |
 | Analog I/O | C0-4AD2DA-2 (4 in / 2 out, 0–10 V) |
-| Touch panel | C-more EA7-T8C (800 × 600) |
+| Touch panel | C-more EA7-T8C (640 × 480) |
 | AC transducer | AcuAMP VACT500-42L |
 | 24 V supply | RHINO PSB24-060S-P |
 | Conditioning board | BusBoard ST2 stripboard |
@@ -27,6 +27,7 @@ Each document is an HTML page (open it in a browser) with a matching PDF for pri
 | `bench-meter-pcb` | Hole-by-hole ST2 stripboard layout: cuts, links and part placement |
 | `bench-meter-ladder` | CLICK ladder program: address map, module setup and all rungs |
 | `bench-meter-hmi` | C-more screens: mockups and object-by-object build sheet |
+| `bench-meter-panel` | Front panel: HMI cutout, 22 mm controls, jack layout and hole schedule |
 
 ## Safety
 
